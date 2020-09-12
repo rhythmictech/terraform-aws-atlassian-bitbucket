@@ -30,15 +30,15 @@ output "db_username" {
 
 output "lb_arn" {
   description = "ARN of the ELB for Bitbucket access"
-  value       = aws_lb.this.arn
+  value       = aws_elb.this.arn
 }
 
 output "lb_dns_name" {
   description = "DNS Name of the ELB for Bitbucket access"
-  value       = aws_lb.this.dns_name
+  value       = aws_elb.this.dns_name
 }
 
 output "lb_zone_id" {
   description = "Route53 Zone ID of the ELB for Bitbucket access"
-  value       = aws_lb.this.zone_id
+  value       = aws_elb.this.zone_id
 }

@@ -27,7 +27,7 @@ resource "aws_security_group_rule" "allow_all" {
 }
 
 resource "aws_security_group_rule" "allow_inbound_http_from_lb" {
-  description              = "Allow traffic from the load balancer"
+  description              = "Allow HTTPS traffic from the load balancer"
   from_port                = 7990
   protocol                 = "tcp"
   security_group_id        = aws_security_group.this.id
@@ -35,3 +35,14 @@ resource "aws_security_group_rule" "allow_inbound_http_from_lb" {
   to_port                  = 7990
   type                     = "ingress"
 }
+
+resource "aws_security_group_rule" "allow_inbound_http_from_lb_ssh" {
+  description              = "Allow SSH traffic from the load balancer"
+  from_port                = 7999
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.this.id
+  source_security_group_id = aws_security_group.elb.id
+  to_port                  = 7999
+  type                     = "ingress"
+}
+

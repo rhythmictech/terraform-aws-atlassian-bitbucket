@@ -28,6 +28,11 @@ variable "admin_password" {
   type = string
 }
 
+variable "data_volume_size" {
+  description = "Size in GB of the data volume"
+  type = number
+}
+
 variable "dns_prefix" {
   default = null
   description = "the hostname that will be used for bitbucket. This will be combined with the domain in `zone_id` or the value of `domain_name` to form the base url."
@@ -42,13 +47,19 @@ variable "domain_name" {
 
 variable "license_key" {
   default = ""
-  description = "Bitbucket license key (optional)"
+  description = "Bitbucket license key (optional, must be a single line)"
   type = string
 }
 
 variable "site_name" {
   default = "Bitbucket"
   description = "Bitbucket site name"
+  type = string
+}
+
+variable "volume_key" {
+  default = "bitbucket-volume"
+  description = "This value is set to a key on the EBS volume and must be present for the bitbucket instance to be permitted to attach it."
   type = string
 }
 
@@ -71,6 +82,12 @@ variable "asg_additional_security_groups" {
   default     = []
   description = "Additional security group IDs to attach to ASG instances"
   type        = list(string)
+}
+
+variable "asg_additional_user_data" {
+  default     = ""
+  description = "Additional User Data to attach to the launch template"
+  type        = string
 }
 
 variable "asg_allow_outbound_egress" {
@@ -109,29 +126,35 @@ variable "asg_min_size" {
   type        = number
 }
 
-variable "asg_subnets" {
-  description = "Subnets to associate ASG instances with (specify 1 or more)"
-  type        = list(string)
+variable "asg_root_volume_size" {
+  default = 20
+  description = "size of root volume (includes app install but not data dir)"
+  type = number
+}
+
+variable "asg_subnet" {
+  description = "Subnet to associate ASG instances with (specify no more than 1)"
+  type        = string
 }
 
 #################################################
 # DB Settings
 #################################################
 
-variable "bitbucket_additional_security_groups" {
+variable "db_additional_security_groups" {
   default     = []
   description = "SGs permitted access to RDS"
   type        = list(string)
 }
 
-variable "bitbucket_allowed_access_cidrs" {
+variable "db_allowed_access_cidrs" {
   default     = []
   description = "CIDRs permitted access to RDS"
   type        = list(string)
 }
 
 variable "db_engine_version" {
-  default     = "12"
+  default     = "11"
   description = "engine version to run"
   type        = string
 }
@@ -165,8 +188,14 @@ variable "db_monitoring_interval" {
 }
 
 variable "db_parameters" {
-  default = null
   description = "DB parameters (downstream module defaults will be used if not specified)"
+
+  default = [
+    {
+      name = "client_encoding"
+      value = "UTF8"
+    }
+  ]
 
   type = list(object({
     name  = string
@@ -194,6 +223,11 @@ variable "db_vpc_id" {
 ########################################
 # Networking Vars
 ########################################
+
+variable "availability_zone" {
+  description = "Specify the availability zone that the instance will be deployed in. Because Bitbucket requires an EBS volume for data and can't use EFS, the value of `availability_zone` must match the AZ associated with the value of `asg_subnet`."
+  type        = string
+}
 
 variable "elb_additional_sg_tags" {
   default     = {}
