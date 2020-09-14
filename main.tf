@@ -23,18 +23,24 @@ data "aws_secretsmanager_secret_version" "dbpassword" {
   secret_id = module.bitbucketdb.password_secretsmanager_arn
 }
 
+resource "random_string" "admin_password" {
+  length  = 16
+  special = false
+}
+
 locals {
-  domain_name   = try(trimsuffix(data.aws_route53_zone.zone[0].name, "."), var.domain_name)
-  bitbucket_url = "${var.dns_prefix}.${local.domain_name}"
-  db_name       = replace(local.short_name, "-", "")
-  db_vpc_id     = var.db_vpc_id == null ? var.vpc_id : var.db_vpc_id
-  region        = data.aws_region.current.name
-  short_name    = substr(var.name, 0, 32)
+  admin_password = coalesce(var.admin_password, random_string.admin_password.result)
+  bitbucket_url  = "${var.dns_prefix}.${local.domain_name}"
+  db_name        = replace(local.short_name, "-", "")
+  db_vpc_id      = coalesce(var.db_vpc_id, var.vpc_id)
+  domain_name    = try(trimsuffix(data.aws_route53_zone.zone[0].name, "."), var.domain_name)
+  region         = data.aws_region.current.name
+  short_name     = substr(var.name, 0, 32)
 
   configure_script = templatefile("${path.module}/templates/configure.sh.tpl",
     {
-      admin_password = var.admin_password
       admin_email    = var.admin_email
+      admin_password = local.admin_password
       base_hostname  = local.bitbucket_url
       db_url         = "jdbc:postgresql://${module.bitbucketdb.instance_connection_info.endpoint}/postgres"
       db_username    = module.bitbucketdb.instance_connection_info.username
@@ -127,8 +133,8 @@ resource "aws_launch_configuration" "this" {
 }
 
 module "bitbucketdb" {
-  #source  = "rhythmictech/rds-postgres/aws"
-  source = "git::https://github.com/rhythmictech/terraform-aws-rds-postgres?ref=align"
+  source  = "rhythmictech/rds-postgres/aws"
+  version = "~> 3.0.0"
 
   name                    = local.db_name
   allowed_cidr_blocks     = var.db_allowed_access_cidrs
