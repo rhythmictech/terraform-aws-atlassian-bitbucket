@@ -45,12 +45,12 @@ resource "aws_iam_role" "this" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "ebs" {
+resource "aws_iam_role_policy_attachment" "this" {
   role       = aws_iam_role.this.name
   policy_arn = aws_iam_policy.this.arn
 }
 
-resource "aws_iam_role_policy_attachment" "this" {
+resource "aws_iam_role_policy_attachment" "additional" {
   count      = length(var.asg_additional_iam_policies)
   role       = aws_iam_role.this.name
   policy_arn = var.asg_additional_iam_policies[count.index]
