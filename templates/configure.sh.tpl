@@ -90,3 +90,4 @@ END
 chown bitbucket /opt/atlassian/data/bitbucket/shared/bitbucket.properties
 
 /usr/bin/systemctl restart bitbucket
+/usr/bin/systemctl enable bitbucket
