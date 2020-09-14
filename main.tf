@@ -128,7 +128,7 @@ resource "aws_launch_configuration" "this" {
 
 module "bitbucketdb" {
   #source  = "rhythmictech/rds-postgres/aws"
-  source = "/Users/cdaniluk/dev/tf/terraform-aws-rds-postgres"
+  source = "git::https://github.com/rhythmictech/terraform-aws-rds-postgres?ref=align"
 
   name                    = local.db_name
   allowed_cidr_blocks     = var.db_allowed_access_cidrs
