@@ -5,27 +5,27 @@ output "iam_role_arn" {
 
 output "db_instance_connection_info" {
   description = "DB Instance Connect Info (object)"
-  value = module.bitbucketdb.instance_connection_info
+  value       = module.bitbucketdb.instance_connection_info
 }
 
 output "db_instance_id" {
   description = "DB Instance ID"
-  value = module.bitbucketdb.instance_id
+  value       = module.bitbucketdb.instance_id
 }
 
 output "db_password_secretsmanager_arn" {
   description = "Secret ARN for DB password"
-  value = module.bitbucketdb.password_secretsmanager_arn
+  value       = module.bitbucketdb.password_secretsmanager_arn
 }
 
 output "db_password_secretsmanager_version" {
   description = "Secret Version for DB password"
-  value = module.bitbucketdb.password_secretsmanager_version
+  value       = module.bitbucketdb.password_secretsmanager_version
 }
 
 output "db_username" {
   description = "Master username"
-  value = module.bitbucketdb.username
+  value       = module.bitbucketdb.username
 }
 
 output "lb_arn" {

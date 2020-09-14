@@ -12,16 +12,16 @@ data "aws_iam_policy_document" "assume" {
 data "aws_iam_policy_document" "this" {
   statement {
     actions = ["ec2:AttachVolume"]
-    sid = "AllowEBSAttach"
-    
+    sid     = "AllowEBSAttach"
+
     resources = [
       "arn:aws:ec2:*:*:instance/*",
       "arn:aws:ec2:*:*:volume/*"
-      ]
+    ]
 
     condition {
-      test = "StringLike"
-      values = [var.volume_key]
+      test     = "StringLike"
+      values   = [var.volume_key]
       variable = "ec2:ResourceTag/VolumeKey"
     }
   }
@@ -31,8 +31,8 @@ resource "aws_iam_policy" "this" {
   name_prefix = var.name
 
   description = "IAM policy for bitbucket servers"
-  path = "/"
-  policy = data.aws_iam_policy_document.this.json
+  path        = "/"
+  policy      = data.aws_iam_policy_document.this.json
 }
 
 resource "aws_iam_role" "this" {

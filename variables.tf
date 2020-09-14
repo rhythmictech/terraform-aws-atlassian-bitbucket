@@ -20,47 +20,47 @@ variable "tags" {
 
 variable "admin_email" {
   description = "email address for administrator"
-  type = string
+  type        = string
 }
 
 variable "admin_password" {
   description = "initial password to use for administrator"
-  type = string
+  type        = string
 }
 
 variable "data_volume_size" {
   description = "Size in GB of the data volume"
-  type = number
+  type        = number
 }
 
 variable "dns_prefix" {
-  default = null
+  default     = null
   description = "the hostname that will be used for bitbucket. This will be combined with the domain in `zone_id` or the value of `domain_name` to form the base url."
-  type = string
+  type        = string
 }
 
 variable "domain_name" {
-  default = null
+  default     = null
   description = "domain name, which is only used if `zone_id` is not specified to compute the base url"
-  type = string
+  type        = string
 }
 
 variable "license_key" {
-  default = ""
+  default     = ""
   description = "Bitbucket license key (optional, must be a single line)"
-  type = string
+  type        = string
 }
 
 variable "site_name" {
-  default = "Bitbucket"
+  default     = "Bitbucket"
   description = "Bitbucket site name"
-  type = string
+  type        = string
 }
 
 variable "volume_key" {
-  default = "bitbucket-volume"
+  default     = "bitbucket-volume"
   description = "This value is set to a key on the EBS volume and must be present for the bitbucket instance to be permitted to attach it."
-  type = string
+  type        = string
 }
 
 ########################################
@@ -127,9 +127,9 @@ variable "asg_min_size" {
 }
 
 variable "asg_root_volume_size" {
-  default = 20
+  default     = 20
   description = "size of root volume (includes app install but not data dir)"
-  type = number
+  type        = number
 }
 
 variable "asg_subnet" {
@@ -192,7 +192,7 @@ variable "db_parameters" {
 
   default = [
     {
-      name = "client_encoding"
+      name  = "client_encoding"
       value = "UTF8"
     }
   ]
@@ -263,7 +263,7 @@ variable "vpc_id" {
 }
 
 variable "zone_id" {
-  default = null
+  default     = null
   description = "Zone ID to make Route53 entry for bitbucket in. If not specified, `domain_name` must be specified so that the base URL can be determined."
-  type = string
+  type        = string
 }

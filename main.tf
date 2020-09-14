@@ -111,6 +111,11 @@ resource "aws_launch_configuration" "this" {
   key_name                    = var.asg_key_name
   user_data_base64            = data.template_cloudinit_config.this.rendered
 
+  root_block_device {
+    encrypted   = true
+    volume_size = var.asg_root_volume_size
+  }
+
   security_groups = concat(
     var.asg_additional_security_groups,
     [aws_security_group.this.id]
