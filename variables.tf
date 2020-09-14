@@ -24,7 +24,8 @@ variable "admin_email" {
 }
 
 variable "admin_password" {
-  description = "initial password to use for administrator"
+  default     = null
+  description = "initial password to use for administrator (only used when bootstrapping a new instance, otherwise ignored)"
   type        = string
 }
 
@@ -104,18 +105,18 @@ variable "asg_desired_capacity" {
 
 variable "asg_instance_type" {
   default     = "t3a.micro"
-  description = "Instance type for scim app"
+  description = "Instance type for app"
   type        = string
 }
 
 variable "asg_key_name" {
   default     = null
-  description = "Optional keypair to associate with instances"
+  description = "Optional ssh keypair to associate with instances"
   type        = string
 }
 
 variable "asg_max_size" {
-  default     = 2
+  default     = 1
   description = "Maximum number of instances in the autoscaling group"
   type        = number
 }
@@ -159,12 +160,8 @@ variable "db_engine_version" {
   type        = string
 }
 
-variable "db_storage_size" {
-  description = "Size in DB (in GB)"
-  type        = number
-}
-
 variable "db_instance_class" {
+  default     = "db.t3.large"
   description = "DB Instance Size"
   type        = string
 }
@@ -177,7 +174,7 @@ variable "db_multi_az" {
 
 variable "db_monitoring_role_arn" {
   default     = null
-  description = "ARN for Database Monitoring (required for performance insights)"
+  description = "IAM Role ARN for Database Monitoring permissions (required for performance insights)"
   type        = string
 }
 
@@ -188,7 +185,7 @@ variable "db_monitoring_interval" {
 }
 
 variable "db_parameters" {
-  description = "DB parameters (downstream module defaults will be used if not specified)"
+  description = "DB parameters (by default only sets utf8 as required by Bitbucket)"
 
   default = [
     {
@@ -207,6 +204,11 @@ variable "db_performance_insights_enabled" {
   default     = false
   description = "Whether or not to enable DB performance insights"
   type        = bool
+}
+
+variable "db_storage_size" {
+  description = "Size of DB (in GB)"
+  type        = number
 }
 
 variable "db_subnet_group" {

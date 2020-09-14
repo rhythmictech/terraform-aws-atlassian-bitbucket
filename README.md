@@ -56,34 +56,34 @@ A bit about this module
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | admin\_email | email address for administrator | `string` | n/a | yes |
-| admin\_password | initial password to use for administrator | `string` | n/a | yes |
 | ami\_id | AMI to build on (must have `ansible-role-atlassian-bitbucket` module installed) | `string` | n/a | yes |
 | asg\_subnet | Subnet to associate ASG instances with (specify no more than 1) | `string` | n/a | yes |
 | availability\_zone | Specify the availability zone that the instance will be deployed in. Because Bitbucket requires an EBS volume for data and can't use EFS, the value of `availability_zone` must match the AZ associated with the value of `asg_subnet`. | `string` | n/a | yes |
 | data\_volume\_size | Size in GB of the data volume | `number` | n/a | yes |
-| db\_instance\_class | DB Instance Size | `string` | n/a | yes |
-| db\_storage\_size | Size in DB (in GB) | `number` | n/a | yes |
+| db\_storage\_size | Size of DB (in GB) | `number` | n/a | yes |
 | db\_subnet\_group | Database subnet group | `string` | n/a | yes |
 | elb\_certificate | ARN of certificate to associate with ELB | `string` | n/a | yes |
 | elb\_subnets | Subnets to associate ELB to | `list(string)` | n/a | yes |
 | vpc\_id | VPC to create associated resources in | `string` | n/a | yes |
+| admin\_password | initial password to use for administrator (only used when bootstrapping a new instance, otherwise ignored) | `string` | `null` | no |
 | asg\_additional\_iam\_policies | Additional IAM policies to attach to the  ASG instance profile | `list(string)` | `[]` | no |
 | asg\_additional\_security\_groups | Additional security group IDs to attach to ASG instances | `list(string)` | `[]` | no |
 | asg\_additional\_user\_data | Additional User Data to attach to the launch template | `string` | `""` | no |
 | asg\_allow\_outbound\_egress | whether or not the default SG should allow outbound egress | `bool` | `true` | no |
 | asg\_desired\_capacity | The number of Amazon EC2 instances that should be running in the group. | `number` | `1` | no |
-| asg\_instance\_type | Instance type for scim app | `string` | `"t3a.micro"` | no |
-| asg\_key\_name | Optional keypair to associate with instances | `string` | `null` | no |
-| asg\_max\_size | Maximum number of instances in the autoscaling group | `number` | `2` | no |
+| asg\_instance\_type | Instance type for app | `string` | `"t3a.micro"` | no |
+| asg\_key\_name | Optional ssh keypair to associate with instances | `string` | `null` | no |
+| asg\_max\_size | Maximum number of instances in the autoscaling group | `number` | `1` | no |
 | asg\_min\_size | Minimum number of instances in the autoscaling group | `number` | `1` | no |
 | asg\_root\_volume\_size | size of root volume (includes app install but not data dir) | `number` | `20` | no |
 | db\_additional\_security\_groups | SGs permitted access to RDS | `list(string)` | `[]` | no |
 | db\_allowed\_access\_cidrs | CIDRs permitted access to RDS | `list(string)` | `[]` | no |
 | db\_engine\_version | engine version to run | `string` | `"11"` | no |
+| db\_instance\_class | DB Instance Size | `string` | `"db.t3.large"` | no |
 | db\_monitoring\_interval | Enhanced monitoring interval (5-60 seconds, 0 to disable) | `number` | `0` | no |
-| db\_monitoring\_role\_arn | ARN for Database Monitoring (required for performance insights) | `string` | `null` | no |
+| db\_monitoring\_role\_arn | IAM Role ARN for Database Monitoring permissions (required for performance insights) | `string` | `null` | no |
 | db\_multi\_az | If true, DB will be configured in multi-AZ mode | `bool` | `false` | no |
-| db\_parameters | DB parameters (downstream module defaults will be used if not specified) | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "client_encoding",<br>    "value": "UTF8"<br>  }<br>]</pre> | no |
+| db\_parameters | DB parameters (by default only sets utf8 as required by Bitbucket) | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "client_encoding",<br>    "value": "UTF8"<br>  }<br>]</pre> | no |
 | db\_performance\_insights\_enabled | Whether or not to enable DB performance insights | `bool` | `false` | no |
 | db\_vpc\_id | VPC ID for database (if omitted, the value for `vpc_id` is used instead) | `string` | `null` | no |
 | dns\_prefix | the hostname that will be used for bitbucket. This will be combined with the domain in `zone_id` or the value of `domain_name` to form the base url. | `string` | `null` | no |
