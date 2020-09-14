@@ -43,15 +43,17 @@ A bit about this module
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12.19 |
-| aws | ~> 2.69.0 |
-| template | ~> 2.1.2 |
+| aws | >= 2.65 |
+| random | >= 1.2 |
+| template | >= 2.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 2.69.0 |
-| template | ~> 2.1.2 |
+| aws | >= 2.65 |
+| random | >= 1.2 |
+| template | >= 2.1 |
 
 ## Inputs
 
@@ -113,6 +115,7 @@ A bit about this module
 | lb\_arn | ARN of the ELB for Bitbucket access |
 | lb\_dns\_name | DNS Name of the ELB for Bitbucket access |
 | lb\_zone\_id | Route53 Zone ID of the ELB for Bitbucket access |
+| url | Bitbucket Server URL |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

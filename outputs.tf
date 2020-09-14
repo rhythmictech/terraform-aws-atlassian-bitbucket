@@ -42,3 +42,8 @@ output "lb_zone_id" {
   description = "Route53 Zone ID of the ELB for Bitbucket access"
   value       = aws_elb.this.zone_id
 }
+
+output "url" {
+  description = "Bitbucket Server URL"
+  value       = local.bitbucket_url
+}
