@@ -42,14 +42,16 @@ A bit about this module
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.19 |
+| terraform | ~> 0.12.19 |
+| aws | ~> 2.69.0 |
+| template | ~> 2.1.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
-| template | n/a |
+| aws | ~> 2.69.0 |
+| template | ~> 2.1.2 |
 
 ## Inputs
 
