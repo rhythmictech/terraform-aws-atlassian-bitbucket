@@ -22,10 +22,11 @@ do
     fi
 done
 
-sleep 2
+# volume may present to lsblk before the os has fully processed it, so give it a chance
+sleep 20
 
 # create fs if needed
-/sbin/parted /dev/nvme1n1 print 2>/dev/null |grep Linux
+/sbin/parted /dev/nvme1n1 print 2>/dev/null |grep xfs
 if [ $? -eq 0 ]
 then
   echo "Data partition found, ensuring it is mounted"

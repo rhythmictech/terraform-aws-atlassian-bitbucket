@@ -45,4 +45,3 @@ resource "aws_security_group_rule" "allow_inbound_http_from_lb_ssh" {
   to_port                  = 7999
   type                     = "ingress"
 }
-
