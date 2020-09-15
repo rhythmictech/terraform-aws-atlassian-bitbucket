@@ -200,6 +200,12 @@ variable "db_parameters" {
   }))
 }
 
+variable "db_password_version" {
+  default     = 1
+  description = "Increment to force master user password change"
+  type        = number
+}
+
 variable "db_performance_insights_enabled" {
   default     = false
   description = "Whether or not to enable DB performance insights"

@@ -88,6 +88,7 @@ A bit about this module
 | db\_monitoring\_role\_arn | IAM Role ARN for Database Monitoring permissions (required for performance insights) | `string` | `null` | no |
 | db\_multi\_az | If true, DB will be configured in multi-AZ mode | `bool` | `false` | no |
 | db\_parameters | DB parameters (by default only sets utf8 as required by Bitbucket) | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "client_encoding",<br>    "value": "UTF8"<br>  }<br>]</pre> | no |
+| db\_password\_version | Increment to force master user password change | `number` | `1` | no |
 | db\_performance\_insights\_enabled | Whether or not to enable DB performance insights | `bool` | `false` | no |
 | db\_vpc\_id | VPC ID for database (if omitted, the value for `vpc_id` is used instead) | `string` | `null` | no |
 | dns\_prefix | the hostname that will be used for bitbucket. This will be combined with the domain in `zone_id` or the value of `domain_name` to form the base url. | `string` | `null` | no |

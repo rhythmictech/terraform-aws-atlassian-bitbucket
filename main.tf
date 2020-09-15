@@ -134,7 +134,7 @@ resource "aws_launch_configuration" "this" {
 
 module "bitbucketdb" {
   source  = "rhythmictech/rds-postgres/aws"
-  version = "~> 3.0.0"
+  version = "~> 3.0.1"
 
   name                    = local.db_name
   allowed_cidr_blocks     = var.db_allowed_access_cidrs
@@ -148,7 +148,7 @@ module "bitbucketdb" {
   monitoring_role_arn          = var.db_monitoring_role_arn
   multi_az                     = var.db_multi_az
   parameters                   = var.db_parameters
-  pass_version                 = 1
+  pass_version                 = var.db_password_version
   performance_insights_enabled = var.db_performance_insights_enabled
   skip_final_snapshot          = false
   subnet_group_name            = var.db_subnet_group
