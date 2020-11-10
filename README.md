@@ -107,6 +107,9 @@ A bit about this module
 
 | Name | Description |
 |------|-------------|
+| asg\_arn | ARN of the ASG for the Bitbucket instance |
+| asg\_id | ID of the ASG for the Bitbucket instance |
+| asg\_name | Name of the ASG for the Bitbucket instance |
 | db\_instance\_connection\_info | DB Instance Connect Info (object) |
 | db\_instance\_id | DB Instance ID |
 | db\_password\_secretsmanager\_arn | Secret ARN for DB password |
