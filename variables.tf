@@ -174,7 +174,7 @@ variable "db_multi_az" {
 
 variable "db_monitoring_role_arn" {
   default     = null
-  description = "IAM Role ARN for Database Monitoring permissions (required for performance insights)"
+  description = "IAM Role ARN for Database Monitoring permissions (if `db_monitoring_interval > 0` and this is omitted, a role will be created automatically)"
   type        = string
 }
 

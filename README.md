@@ -85,7 +85,7 @@ A bit about this module
 | db\_engine\_version | engine version to run | `string` | `"11"` | no |
 | db\_instance\_class | DB Instance Size | `string` | `"db.t3.large"` | no |
 | db\_monitoring\_interval | Enhanced monitoring interval (5-60 seconds, 0 to disable) | `number` | `0` | no |
-| db\_monitoring\_role\_arn | IAM Role ARN for Database Monitoring permissions (required for performance insights) | `string` | `null` | no |
+| db\_monitoring\_role\_arn | IAM Role ARN for Database Monitoring permissions (if `db_monitoring_interval > 0` and this is omitted, a role will be created automatically) | `string` | `null` | no |
 | db\_multi\_az | If true, DB will be configured in multi-AZ mode | `bool` | `false` | no |
 | db\_parameters | DB parameters (by default only sets utf8 as required by Bitbucket) | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "client_encoding",<br>    "value": "UTF8"<br>  }<br>]</pre> | no |
 | db\_password\_version | Increment to force master user password change | `number` | `1` | no |

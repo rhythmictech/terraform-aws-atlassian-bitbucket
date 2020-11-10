@@ -134,7 +134,7 @@ resource "aws_launch_configuration" "this" {
 
 module "bitbucketdb" {
   source  = "rhythmictech/rds-postgres/aws"
-  version = "~> 3.0.1"
+  version = "~> 4.1.0-rc1"
 
   name                    = local.db_name
   allowed_cidr_blocks     = var.db_allowed_access_cidrs
