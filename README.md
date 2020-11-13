@@ -1,10 +1,10 @@
 # terraform-aws-atlassian-bitbucket
 
-[![tflint](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/tflint/badge.svg?branch=main&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Atflint+event%3Apush+branch%3Amain)
-[![tfsec](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/tfsec/badge.svg?branch=main&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Atfsec+event%3Apush+branch%3Amain)
-[![yamllint](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/yamllint/badge.svg?branch=main&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Ayamllint+event%3Apush+branch%3Amain)
-[![misspell](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/misspell/badge.svg?branch=main&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Amisspell+event%3Apush+branch%3Amain)
-[![pre-commit-check](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/pre-commit-check/badge.svg?branch=main&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Apre-commit-check+event%3Apush+branch%3Amain)
+[![tflint](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/tflint/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Atflint+event%3Apush+branch%3Amaster)
+[![tfsec](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/tfsec/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Atfsec+event%3Apush+branch%3Amaster)
+[![yamllint](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/yamllint/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Ayamllint+event%3Apush+branch%3Amaster)
+[![misspell](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/misspell/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Amisspell+event%3Apush+branch%3Amaster)
+[![pre-commit-check](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/workflows/pre-commit-check/badge.svg?branch=master&event=push)](https://github.com/rhythmictech/terraform-aws-atlassian-bitbucket/actions?query=workflow%3Apre-commit-check+event%3Apush+branch%3Amaster)
 <a href="https://twitter.com/intent/follow?screen_name=RhythmicTech"><img src="https://img.shields.io/twitter/follow/RhythmicTech?style=social&logo=twitter" alt="follow on Twitter"></a>
 
 Creates an Atlassian Bitbucket instance, optionally bootstrapping the configuration.
@@ -85,7 +85,7 @@ A bit about this module
 | db\_engine\_version | engine version to run | `string` | `"11"` | no |
 | db\_instance\_class | DB Instance Size | `string` | `"db.t3.large"` | no |
 | db\_monitoring\_interval | Enhanced monitoring interval (5-60 seconds, 0 to disable) | `number` | `0` | no |
-| db\_monitoring\_role\_arn | IAM Role ARN for Database Monitoring permissions (required for performance insights) | `string` | `null` | no |
+| db\_monitoring\_role\_arn | IAM Role ARN for Database Monitoring permissions (if `db_monitoring_interval > 0` and this is omitted, a role will be created automatically) | `string` | `null` | no |
 | db\_multi\_az | If true, DB will be configured in multi-AZ mode | `bool` | `false` | no |
 | db\_parameters | DB parameters (by default only sets utf8 as required by Bitbucket) | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "client_encoding",<br>    "value": "UTF8"<br>  }<br>]</pre> | no |
 | db\_password\_version | Increment to force master user password change | `number` | `1` | no |
@@ -107,6 +107,9 @@ A bit about this module
 
 | Name | Description |
 |------|-------------|
+| asg\_arn | ARN of the ASG for the Bitbucket instance |
+| asg\_id | ID of the ASG for the Bitbucket instance |
+| asg\_name | Name of the ASG for the Bitbucket instance |
 | db\_instance\_connection\_info | DB Instance Connect Info (object) |
 | db\_instance\_id | DB Instance ID |
 | db\_password\_secretsmanager\_arn | Secret ARN for DB password |
