@@ -42,7 +42,7 @@ A bit about this module
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.19 |
+| terraform | >= 0.12.19 |
 | aws | >= 2.65 |
 | random | >= 1.2 |
 | template | >= 2.1 |
