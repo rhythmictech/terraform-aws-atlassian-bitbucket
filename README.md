@@ -96,6 +96,7 @@ A bit about this module
 | elb\_additional\_sg\_tags | Additional tags to apply to the ELB security group. Useful if you use an external process to manage ingress rules. | `map(string)` | `{}` | no |
 | elb\_allowed\_cidr\_blocks | List of allowed CIDR blocks. If `[]` is specified, no inbound ingress rules will be created | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | elb\_internal | Create as an internal or internet-facing ELB | `bool` | `true` | no |
+| elb\_port | Port that the Elastic Load Balancer for Bitbucket should listen on (Default is 443.) | `number` | `443` | no |
 | license\_key | Bitbucket license key (optional, must be a single line) | `string` | `""` | no |
 | name | Moniker to apply to all resources in the module | `string` | `"bitbucket"` | no |
 | site\_name | Bitbucket site name | `string` | `"Bitbucket"` | no |

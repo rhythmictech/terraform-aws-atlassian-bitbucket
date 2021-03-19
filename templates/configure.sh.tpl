@@ -83,7 +83,7 @@ jdbc.password: ${db_password}
 
 server.address: 0.0.0.0
 server.proxy-name: ${base_hostname}
-server.proxy-port: 443
+server.proxy-port: ${elb_port}
 server.scheme: https
 server.secure: true
 END

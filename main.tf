@@ -45,6 +45,7 @@ locals {
       db_url         = "jdbc:postgresql://${module.bitbucketdb.instance_connection_info.endpoint}/postgres"
       db_username    = module.bitbucketdb.instance_connection_info.username
       db_password    = replace(data.aws_secretsmanager_secret_version.dbpassword.secret_string, "$", "\\$")
+      elb_port       = var.elb_port
       license_key    = var.license_key
       mount_point    = "/opt/atlassian/data"
       region         = local.region
