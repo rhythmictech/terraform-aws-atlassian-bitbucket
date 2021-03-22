@@ -39,10 +39,10 @@ resource "aws_security_group_rule" "elb_ingress" {
 
   cidr_blocks       = var.elb_allowed_cidr_blocks #tfsec:ignore:AWS006
   description       = "Allow HTTPS traffic from the allowed ranges"
-  from_port         = 443
+  from_port         = var.elb_port
   protocol          = "tcp"
   security_group_id = aws_security_group.elb.id
-  to_port           = 443
+  to_port           = var.elb_port
   type              = "ingress"
 }
 
@@ -76,7 +76,7 @@ resource "aws_elb" "this" {
   listener {
     instance_port      = 7990
     instance_protocol  = "http"
-    lb_port            = 443
+    lb_port            = var.elb_port
     lb_protocol        = "https"
     ssl_certificate_id = var.elb_certificate
   }
