@@ -266,6 +266,12 @@ variable "elb_port" {
   type        = number
 }
 
+variable "elb_ssh_port" {
+  default     = 22
+  description = "Port that the Elastic Load Balancer for Bitbucket should listen on (Default is 443.)"
+  type        = number
+}
+
 variable "elb_subnets" {
   description = "Subnets to associate ELB to"
   type        = list(string)

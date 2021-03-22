@@ -51,10 +51,10 @@ resource "aws_security_group_rule" "elb_ingress_ssh" {
 
   cidr_blocks       = var.elb_allowed_cidr_blocks #tfsec:ignore:AWS006
   description       = "Allow SSH traffic from the allowed ranges"
-  from_port         = 22
+  from_port         = var.elb_ssh_port
   protocol          = "tcp"
   security_group_id = aws_security_group.elb.id
-  to_port           = 22
+  to_port           = var.elb_ssh_port
   type              = "ingress"
 }
 
@@ -84,7 +84,7 @@ resource "aws_elb" "this" {
   listener {
     instance_port     = 7999
     instance_protocol = "tcp"
-    lb_port           = 22
+    lb_port           = var.elb_ssh_port
     lb_protocol       = "tcp"
   }
 }
