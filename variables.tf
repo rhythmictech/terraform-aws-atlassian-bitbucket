@@ -262,7 +262,7 @@ variable "elb_internal" {
 
 variable "elb_port" {
   default     = 443
-  description = "Port that the Elastic Load Balancer for Bitbucket should listen on (Default is 443.)"
+  description = "Port that the Elastic Load Balancer for Bitbucket should listen for HTTPS on (Default is 443.)"
   type        = number
 }
 
