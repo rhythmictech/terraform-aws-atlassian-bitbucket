@@ -65,6 +65,17 @@ resource "aws_elb" "this" {
   subnets         = var.elb_subnets
   tags            = var.tags
 
+  dynamic "access_logs" {
+    for_each = var.access_logs_enabled ? ["this"] : []
+
+    content {
+      bucket        = var.access_logs_bucket
+      bucket_prefix = var.access_logs_prefix
+      enabled       = var.access_logs_enabled
+      interval      = var.access_logs_interval
+    }
+  }
+
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 2

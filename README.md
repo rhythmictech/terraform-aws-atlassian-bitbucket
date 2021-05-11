@@ -42,86 +42,127 @@ A bit about this module
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.19 |
-| aws | >= 2.65 |
-| random | >= 1.2 |
-| template | >= 2.1 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.19 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 2.65 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 1.2 |
+| <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 2.65 |
-| random | >= 1.2 |
-| template | >= 2.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 2.65 |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 1.2 |
+| <a name="provider_template"></a> [template](#provider\_template) | >= 2.1 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_bitbucketdb"></a> [bitbucketdb](#module\_bitbucketdb) | rhythmictech/rds-postgres/aws | 4.2.0 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_autoscaling_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
+| [aws_ebs_volume.data](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ebs_volume) | resource |
+| [aws_elb.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/elb) | resource |
+| [aws_iam_instance_profile.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_role.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.additional](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_launch_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_configuration) | resource |
+| [aws_route53_record.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_security_group.elb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group_rule.allow_all](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.allow_inbound_http_from_lb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.allow_inbound_http_from_lb_ssh](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.elb_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.elb_egress_ssh](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.elb_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.elb_ingress_ssh](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [random_string.admin_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [aws_iam_policy_document.assume](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [aws_route53_zone.zone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
+| [aws_secretsmanager_secret_version.dbpassword](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
+| [template_cloudinit_config.this](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/cloudinit_config) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| admin\_email | email address for administrator | `string` | n/a | yes |
-| ami\_id | AMI to build on (must have `ansible-role-atlassian-bitbucket` module installed) | `string` | n/a | yes |
-| asg\_subnet | Subnet to associate ASG instances with (specify no more than 1) | `string` | n/a | yes |
-| availability\_zone | Specify the availability zone that the instance will be deployed in. Because Bitbucket requires an EBS volume for data and can't use EFS, the value of `availability_zone` must match the AZ associated with the value of `asg_subnet`. | `string` | n/a | yes |
-| data\_volume\_size | Size in GB of the data volume | `number` | n/a | yes |
-| db\_storage\_size | Size of DB (in GB) | `number` | n/a | yes |
-| db\_subnet\_group | Database subnet group | `string` | n/a | yes |
-| elb\_certificate | ARN of certificate to associate with ELB | `string` | n/a | yes |
-| elb\_subnets | Subnets to associate ELB to | `list(string)` | n/a | yes |
-| vpc\_id | VPC to create associated resources in | `string` | n/a | yes |
-| admin\_password | initial password to use for administrator (only used when bootstrapping a new instance, otherwise ignored) | `string` | `null` | no |
-| asg\_additional\_iam\_policies | Additional IAM policies to attach to the  ASG instance profile | `list(string)` | `[]` | no |
-| asg\_additional\_security\_groups | Additional security group IDs to attach to ASG instances | `list(string)` | `[]` | no |
-| asg\_additional\_user\_data | Additional User Data to attach to the launch template | `string` | `""` | no |
-| asg\_allow\_outbound\_egress | whether or not the default SG should allow outbound egress | `bool` | `true` | no |
-| asg\_desired\_capacity | The number of Amazon EC2 instances that should be running in the group. | `number` | `1` | no |
-| asg\_instance\_type | Instance type for app | `string` | `"t3a.micro"` | no |
-| asg\_key\_name | Optional ssh keypair to associate with instances | `string` | `null` | no |
-| asg\_max\_size | Maximum number of instances in the autoscaling group | `number` | `1` | no |
-| asg\_min\_size | Minimum number of instances in the autoscaling group | `number` | `1` | no |
-| asg\_root\_volume\_size | size of root volume (includes app install but not data dir) | `number` | `20` | no |
-| db\_additional\_security\_groups | SGs permitted access to RDS | `list(string)` | `[]` | no |
-| db\_allowed\_access\_cidrs | CIDRs permitted access to RDS | `list(string)` | `[]` | no |
-| db\_engine\_version | engine version to run | `string` | `"11"` | no |
-| db\_instance\_class | DB Instance Size | `string` | `"db.t3.large"` | no |
-| db\_monitoring\_interval | Enhanced monitoring interval (5-60 seconds, 0 to disable) | `number` | `0` | no |
-| db\_monitoring\_role\_arn | IAM Role ARN for Database Monitoring permissions (if `db_monitoring_interval > 0` and this is omitted, a role will be created automatically) | `string` | `null` | no |
-| db\_multi\_az | If true, DB will be configured in multi-AZ mode | `bool` | `false` | no |
-| db\_parameters | DB parameters (by default only sets utf8 as required by Bitbucket) | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "client_encoding",<br>    "value": "UTF8"<br>  }<br>]</pre> | no |
-| db\_password\_version | Increment to force master user password change | `number` | `1` | no |
-| db\_performance\_insights\_enabled | Whether or not to enable DB performance insights | `bool` | `false` | no |
-| db\_vpc\_id | VPC ID for database (if omitted, the value for `vpc_id` is used instead) | `string` | `null` | no |
-| dns\_prefix | the hostname that will be used for bitbucket. This will be combined with the domain in `zone_id` or the value of `domain_name` to form the base url. | `string` | `null` | no |
-| domain\_name | domain name, which is only used if `zone_id` is not specified to compute the base url | `string` | `null` | no |
-| elb\_additional\_sg\_tags | Additional tags to apply to the ELB security group. Useful if you use an external process to manage ingress rules. | `map(string)` | `{}` | no |
-| elb\_allowed\_cidr\_blocks | List of allowed CIDR blocks. If `[]` is specified, no inbound ingress rules will be created | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| elb\_internal | Create as an internal or internet-facing ELB | `bool` | `true` | no |
-| elb\_port | Port that the Elastic Load Balancer for Bitbucket should listen on (Default is 443.) | `number` | `443` | no |
-| license\_key | Bitbucket license key (optional, must be a single line) | `string` | `""` | no |
-| name | Moniker to apply to all resources in the module | `string` | `"bitbucket"` | no |
-| site\_name | Bitbucket site name | `string` | `"Bitbucket"` | no |
-| tags | User-Defined tags | `map(string)` | `{}` | no |
-| volume\_key | This value is set to a key on the EBS volume and must be present for the bitbucket instance to be permitted to attach it. | `string` | `"bitbucket-volume"` | no |
-| zone\_id | Zone ID to make Route53 entry for bitbucket in. If not specified, `domain_name` must be specified so that the base URL can be determined. | `string` | `null` | no |
+| <a name="input_admin_email"></a> [admin\_email](#input\_admin\_email) | email address for administrator | `string` | n/a | yes |
+| <a name="input_ami_id"></a> [ami\_id](#input\_ami\_id) | AMI to build on (must have `ansible-role-atlassian-bitbucket` module installed) | `string` | n/a | yes |
+| <a name="input_asg_subnet"></a> [asg\_subnet](#input\_asg\_subnet) | Subnet to associate ASG instances with (specify no more than 1) | `string` | n/a | yes |
+| <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | Specify the availability zone that the instance will be deployed in. Because Bitbucket requires an EBS volume for data and can't use EFS, the value of `availability_zone` must match the AZ associated with the value of `asg_subnet`. | `string` | n/a | yes |
+| <a name="input_data_volume_size"></a> [data\_volume\_size](#input\_data\_volume\_size) | Size in GB of the data volume | `number` | n/a | yes |
+| <a name="input_db_storage_size"></a> [db\_storage\_size](#input\_db\_storage\_size) | Size of DB (in GB) | `number` | n/a | yes |
+| <a name="input_db_subnet_group"></a> [db\_subnet\_group](#input\_db\_subnet\_group) | Database subnet group | `string` | n/a | yes |
+| <a name="input_elb_certificate"></a> [elb\_certificate](#input\_elb\_certificate) | ARN of certificate to associate with ELB | `string` | n/a | yes |
+| <a name="input_elb_subnets"></a> [elb\_subnets](#input\_elb\_subnets) | Subnets to associate ELB to | `list(string)` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC to create associated resources in | `string` | n/a | yes |
+| <a name="input_access_logs_bucket"></a> [access\_logs\_bucket](#input\_access\_logs\_bucket) | The name of the bucket to store LB access logs in. Required if `access_logs_enabled` is `true` | `string` | `null` | no |
+| <a name="input_access_logs_enabled"></a> [access\_logs\_enabled](#input\_access\_logs\_enabled) | Whether to enable LB access logging | `bool` | `false` | no |
+| <a name="input_access_logs_interval"></a> [access\_logs\_interval](#input\_access\_logs\_interval) | The log publishing interval in minutes | `number` | `60` | no |
+| <a name="input_access_logs_prefix"></a> [access\_logs\_prefix](#input\_access\_logs\_prefix) | The path prefix to apply to the LB access logs. | `string` | `null` | no |
+| <a name="input_admin_password"></a> [admin\_password](#input\_admin\_password) | initial password to use for administrator (only used when bootstrapping a new instance, otherwise ignored) | `string` | `null` | no |
+| <a name="input_asg_additional_iam_policies"></a> [asg\_additional\_iam\_policies](#input\_asg\_additional\_iam\_policies) | Additional IAM policies to attach to the  ASG instance profile | `list(string)` | `[]` | no |
+| <a name="input_asg_additional_security_groups"></a> [asg\_additional\_security\_groups](#input\_asg\_additional\_security\_groups) | Additional security group IDs to attach to ASG instances | `list(string)` | `[]` | no |
+| <a name="input_asg_additional_user_data"></a> [asg\_additional\_user\_data](#input\_asg\_additional\_user\_data) | Additional User Data to attach to the launch template | `string` | `""` | no |
+| <a name="input_asg_allow_outbound_egress"></a> [asg\_allow\_outbound\_egress](#input\_asg\_allow\_outbound\_egress) | whether or not the default SG should allow outbound egress | `bool` | `true` | no |
+| <a name="input_asg_desired_capacity"></a> [asg\_desired\_capacity](#input\_asg\_desired\_capacity) | The number of Amazon EC2 instances that should be running in the group. | `number` | `1` | no |
+| <a name="input_asg_instance_type"></a> [asg\_instance\_type](#input\_asg\_instance\_type) | Instance type for app | `string` | `"t3a.micro"` | no |
+| <a name="input_asg_key_name"></a> [asg\_key\_name](#input\_asg\_key\_name) | Optional ssh keypair to associate with instances | `string` | `null` | no |
+| <a name="input_asg_max_size"></a> [asg\_max\_size](#input\_asg\_max\_size) | Maximum number of instances in the autoscaling group | `number` | `1` | no |
+| <a name="input_asg_min_size"></a> [asg\_min\_size](#input\_asg\_min\_size) | Minimum number of instances in the autoscaling group | `number` | `1` | no |
+| <a name="input_asg_root_volume_size"></a> [asg\_root\_volume\_size](#input\_asg\_root\_volume\_size) | size of root volume (includes app install but not data dir) | `number` | `20` | no |
+| <a name="input_db_additional_security_groups"></a> [db\_additional\_security\_groups](#input\_db\_additional\_security\_groups) | SGs permitted access to RDS | `list(string)` | `[]` | no |
+| <a name="input_db_allowed_access_cidrs"></a> [db\_allowed\_access\_cidrs](#input\_db\_allowed\_access\_cidrs) | CIDRs permitted access to RDS | `list(string)` | `[]` | no |
+| <a name="input_db_engine_version"></a> [db\_engine\_version](#input\_db\_engine\_version) | engine version to run | `string` | `"11"` | no |
+| <a name="input_db_instance_class"></a> [db\_instance\_class](#input\_db\_instance\_class) | DB Instance Size | `string` | `"db.t3.large"` | no |
+| <a name="input_db_monitoring_interval"></a> [db\_monitoring\_interval](#input\_db\_monitoring\_interval) | Enhanced monitoring interval (5-60 seconds, 0 to disable) | `number` | `0` | no |
+| <a name="input_db_monitoring_role_arn"></a> [db\_monitoring\_role\_arn](#input\_db\_monitoring\_role\_arn) | IAM Role ARN for Database Monitoring permissions (if `db_monitoring_interval > 0` and this is omitted, a role will be created automatically) | `string` | `null` | no |
+| <a name="input_db_multi_az"></a> [db\_multi\_az](#input\_db\_multi\_az) | If true, DB will be configured in multi-AZ mode | `bool` | `false` | no |
+| <a name="input_db_parameters"></a> [db\_parameters](#input\_db\_parameters) | DB parameters (by default only sets utf8 as required by Bitbucket) | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "client_encoding",<br>    "value": "UTF8"<br>  }<br>]</pre> | no |
+| <a name="input_db_password_version"></a> [db\_password\_version](#input\_db\_password\_version) | Increment to force master user password change | `number` | `1` | no |
+| <a name="input_db_performance_insights_enabled"></a> [db\_performance\_insights\_enabled](#input\_db\_performance\_insights\_enabled) | Whether or not to enable DB performance insights | `bool` | `false` | no |
+| <a name="input_db_vpc_id"></a> [db\_vpc\_id](#input\_db\_vpc\_id) | VPC ID for database (if omitted, the value for `vpc_id` is used instead) | `string` | `null` | no |
+| <a name="input_dns_prefix"></a> [dns\_prefix](#input\_dns\_prefix) | the hostname that will be used for bitbucket. This will be combined with the domain in `zone_id` or the value of `domain_name` to form the base url. | `string` | `null` | no |
+| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | domain name, which is only used if `zone_id` is not specified to compute the base url | `string` | `null` | no |
+| <a name="input_elb_additional_sg_tags"></a> [elb\_additional\_sg\_tags](#input\_elb\_additional\_sg\_tags) | Additional tags to apply to the ELB security group. Useful if you use an external process to manage ingress rules. | `map(string)` | `{}` | no |
+| <a name="input_elb_allowed_cidr_blocks"></a> [elb\_allowed\_cidr\_blocks](#input\_elb\_allowed\_cidr\_blocks) | List of allowed CIDR blocks. If `[]` is specified, no inbound ingress rules will be created | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_elb_internal"></a> [elb\_internal](#input\_elb\_internal) | Create as an internal or internet-facing ELB | `bool` | `true` | no |
+| <a name="input_elb_port"></a> [elb\_port](#input\_elb\_port) | Port that the Elastic Load Balancer for Bitbucket should listen for HTTPS on (Default is 443.) | `number` | `443` | no |
+| <a name="input_elb_ssh_port"></a> [elb\_ssh\_port](#input\_elb\_ssh\_port) | Port that the Elastic Load Balancer for Bitbucket should listen for SSH on (Default is 22.) | `number` | `22` | no |
+| <a name="input_license_key"></a> [license\_key](#input\_license\_key) | Bitbucket license key (optional, must be a single line) | `string` | `""` | no |
+| <a name="input_name"></a> [name](#input\_name) | Moniker to apply to all resources in the module | `string` | `"bitbucket"` | no |
+| <a name="input_site_name"></a> [site\_name](#input\_site\_name) | Bitbucket site name | `string` | `"Bitbucket"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | User-Defined tags | `map(string)` | `{}` | no |
+| <a name="input_volume_key"></a> [volume\_key](#input\_volume\_key) | This value is set to a key on the EBS volume and must be present for the bitbucket instance to be permitted to attach it. | `string` | `"bitbucket-volume"` | no |
+| <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | Zone ID to make Route53 entry for bitbucket in. If not specified, `domain_name` must be specified so that the base URL can be determined. | `string` | `null` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| asg\_arn | ARN of the ASG for the Bitbucket instance |
-| asg\_id | ID of the ASG for the Bitbucket instance |
-| asg\_name | Name of the ASG for the Bitbucket instance |
-| db\_instance\_connection\_info | DB Instance Connect Info (object) |
-| db\_instance\_id | DB Instance ID |
-| db\_password\_secretsmanager\_arn | Secret ARN for DB password |
-| db\_password\_secretsmanager\_version | Secret Version for DB password |
-| db\_username | Master username |
-| iam\_role\_arn | IAM Role ARN of Bitbucket instance |
-| lb\_arn | ARN of the ELB for Bitbucket access |
-| lb\_dns\_name | DNS Name of the ELB for Bitbucket access |
-| lb\_zone\_id | Route53 Zone ID of the ELB for Bitbucket access |
-| url | Bitbucket Server URL |
-
+| <a name="output_asg_arn"></a> [asg\_arn](#output\_asg\_arn) | ARN of the ASG for the Bitbucket instance |
+| <a name="output_asg_id"></a> [asg\_id](#output\_asg\_id) | ID of the ASG for the Bitbucket instance |
+| <a name="output_asg_name"></a> [asg\_name](#output\_asg\_name) | Name of the ASG for the Bitbucket instance |
+| <a name="output_db_instance_connection_info"></a> [db\_instance\_connection\_info](#output\_db\_instance\_connection\_info) | DB Instance Connect Info (object) |
+| <a name="output_db_instance_id"></a> [db\_instance\_id](#output\_db\_instance\_id) | DB Instance ID |
+| <a name="output_db_password_secretsmanager_arn"></a> [db\_password\_secretsmanager\_arn](#output\_db\_password\_secretsmanager\_arn) | Secret ARN for DB password |
+| <a name="output_db_password_secretsmanager_version"></a> [db\_password\_secretsmanager\_version](#output\_db\_password\_secretsmanager\_version) | Secret Version for DB password |
+| <a name="output_db_username"></a> [db\_username](#output\_db\_username) | Master username |
+| <a name="output_iam_role_arn"></a> [iam\_role\_arn](#output\_iam\_role\_arn) | IAM Role ARN of Bitbucket instance |
+| <a name="output_lb_arn"></a> [lb\_arn](#output\_lb\_arn) | ARN of the ELB for Bitbucket access |
+| <a name="output_lb_dns_name"></a> [lb\_dns\_name](#output\_lb\_dns\_name) | DNS Name of the ELB for Bitbucket access |
+| <a name="output_lb_zone_id"></a> [lb\_zone\_id](#output\_lb\_zone\_id) | Route53 Zone ID of the ELB for Bitbucket access |
+| <a name="output_url"></a> [url](#output\_url) | Bitbucket Server URL |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## The Giants Underneath this Module

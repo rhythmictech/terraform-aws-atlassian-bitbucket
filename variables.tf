@@ -232,6 +232,30 @@ variable "db_vpc_id" {
 # Networking Vars
 ########################################
 
+variable "access_logs_bucket" {
+  default     = null
+  description = "The name of the bucket to store LB access logs in. Required if `access_logs_enabled` is `true`"
+  type        = string
+}
+
+variable "access_logs_enabled" {
+  default     = false
+  description = "Whether to enable LB access logging"
+  type        = bool
+}
+
+variable "access_logs_prefix" {
+  default     = null
+  description = "The path prefix to apply to the LB access logs."
+  type        = string
+}
+
+variable "access_logs_interval" {
+  default     = 60
+  description = "The log publishing interval in minutes"
+  type        = number
+}
+
 variable "availability_zone" {
   description = "Specify the availability zone that the instance will be deployed in. Because Bitbucket requires an EBS volume for data and can't use EFS, the value of `availability_zone` must match the AZ associated with the value of `asg_subnet`."
   type        = string
