@@ -45,7 +45,7 @@ locals {
       db_url         = "jdbc:postgresql://${module.bitbucketdb.instance_connection_info.endpoint}/postgres"
       db_username    = module.bitbucketdb.instance_connection_info.username
       db_password    = replace(data.aws_secretsmanager_secret_version.dbpassword.secret_string, "$", "\\$")
-      elb_port       = var.elb_port
+      elb_port       = var.create_alb ? var.alb_https_port : var.elb_port
       license_key    = var.license_key
       mount_point    = "/opt/atlassian/data"
       region         = local.region
@@ -76,7 +76,8 @@ resource "aws_autoscaling_group" "this" {
   health_check_type         = "EC2"
   force_delete              = false
   launch_configuration      = aws_launch_configuration.this.name
-  load_balancers            = [aws_elb.this.id]
+  load_balancers            = !var.create_alb ? [aws_elb.this[0].id] : null
+  target_group_arns         = var.create_alb ? [aws_lb_target_group.https[0].id, aws_lb_target_group.ssh[0].id] : null
   max_size                  = var.asg_max_size
   min_size                  = var.asg_min_size
   wait_for_capacity_timeout = "15m"
@@ -165,8 +166,21 @@ resource "aws_route53_record" "this" {
   zone_id = var.zone_id
 
   alias {
-    name                   = aws_elb.this.dns_name
-    zone_id                = aws_elb.this.zone_id
+    name                   = try(aws_lb.https[0].dns_name, aws_elb.this[0].dns_name)
+    zone_id                = try(aws_lb.https[0].zone_id, aws_elb.this[0].zone_id)
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_route53_record" "ssh" {
+  count   = var.zone_id != null && var.create_alb && var.dns_ssh_prefix != null ? 1 : 0
+  name    = var.dns_ssh_prefix
+  type    = "A"
+  zone_id = var.zone_id
+
+  alias {
+    name                   = try(aws_lb.ssh[0].dns_name, "null")
+    zone_id                = try(aws_lb.ssh[0].zone_id, "null")
     evaluate_target_health = true
   }
 }

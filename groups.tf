@@ -3,11 +3,8 @@ resource "aws_security_group" "this" {
   description = "Attached to all Bitbucket instances"
   vpc_id      = var.vpc_id
 
-  tags = merge(
-    var.tags,
-    map(
-      "Name", "${var.name}"
-    )
+  tags = merge(var.tags,
+    { "Name" : var.name }
   )
 
   lifecycle {
@@ -31,17 +28,31 @@ resource "aws_security_group_rule" "allow_inbound_http_from_lb" {
   from_port                = 7990
   protocol                 = "tcp"
   security_group_id        = aws_security_group.this.id
-  source_security_group_id = aws_security_group.elb.id
+  source_security_group_id = try(aws_security_group.alb_https[0].id, aws_security_group.elb[0].id)
   to_port                  = 7990
   type                     = "ingress"
 }
 
 resource "aws_security_group_rule" "allow_inbound_http_from_lb_ssh" {
+  count = var.create_alb ? 0 : 1
+
   description              = "Allow SSH traffic from the load balancer"
   from_port                = 7999
   protocol                 = "tcp"
   security_group_id        = aws_security_group.this.id
-  source_security_group_id = aws_security_group.elb.id
+  source_security_group_id = aws_security_group.elb[0].id
   to_port                  = 7999
   type                     = "ingress"
+}
+
+resource "aws_security_group_rule" "allow_inbound_from_lb_ssh" {
+  count = var.create_alb ? 1 : 0
+
+  cidr_blocks       = var.alb_allowed_ssh_cidr_blocks
+  description       = "Allow SSH traffic - NLBs do not support SGs"
+  from_port         = 7999
+  protocol          = "tcp"
+  security_group_id = aws_security_group.this.id
+  to_port           = 7999
+  type              = "ingress"
 }

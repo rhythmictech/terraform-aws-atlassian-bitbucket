@@ -34,18 +34,6 @@ variable "data_volume_size" {
   type        = number
 }
 
-variable "dns_prefix" {
-  default     = null
-  description = "the hostname that will be used for bitbucket. This will be combined with the domain in `zone_id` or the value of `domain_name` to form the base url."
-  type        = string
-}
-
-variable "domain_name" {
-  default     = null
-  description = "domain name, which is only used if `zone_id` is not specified to compute the base url"
-  type        = string
-}
-
 variable "license_key" {
   default     = ""
   description = "Bitbucket license key (optional, must be a single line)"
@@ -261,6 +249,90 @@ variable "availability_zone" {
   type        = string
 }
 
+variable "vpc_id" {
+  description = "VPC to create associated resources in"
+  type        = string
+}
+
+########################################
+# ALB Vars (used when `create_alb == true`)
+########################################
+
+variable "create_alb" {
+  default     = false
+  description = "Create an ALB. This will by requirement create an NLB for SSH access on a separate address."
+  type        = bool
+}
+
+variable "alb_additional_sg_tags" {
+  default     = {}
+  description = "Additional tags to apply to the LB security group. Useful if you use an external process to manage ingress rules."
+  type        = map(string)
+}
+
+variable "alb_allowed_https_cidr_blocks" {
+  default     = ["0.0.0.0/0"]
+  description = "List of allowed CIDR blocks. If `[]` is specified, no inbound ingress rules will be created"
+  type        = list(string)
+}
+
+variable "alb_allowed_ssh_cidr_blocks" {
+  default     = ["0.0.0.0/0"]
+  description = "List of allowed CIDR blocks for SSH access. If `[]` is specified, no inbound ingress rules will be created"
+  type        = list(string)
+}
+
+variable "alb_certificate" {
+  description = "ARN of certificate to associate with LB"
+  type        = string
+}
+
+variable "alb_https_internal" {
+  default     = true
+  description = "Create as an internal or internet-facing LB"
+  type        = bool
+}
+
+variable "alb_ssh_internal" {
+  default     = true
+  description = "Create as an internal or internet-facing LB for SSH"
+  type        = bool
+}
+
+variable "alb_https_port" {
+  default     = 443
+  description = "Port that the Load Balancer for Bitbucket should listen for HTTPS on (Default is 443.)"
+  type        = number
+}
+
+variable "alb_ssh_port" {
+  default     = 22
+  description = "Port that the Load Balancer for Bitbucket should listen for SSH on (Default is 22.)"
+  type        = number
+}
+
+variable "alb_ssl_policy" {
+  default     = "ELBSecurityPolicy-TLS-1-2-2017-01"
+  description = "SSL policy for ALB"
+  type        = string
+}
+
+variable "alb_https_subnets" {
+  description = "Subnets to associate HTTPS LB to"
+  type        = list(string)
+}
+
+variable "alb_ssh_subnets" {
+  default     = null
+  description = "Subnets to associate SSH LB to"
+  type        = list(string)
+}
+
+
+########################################
+# ELB Vars (used when `create_alb == false`)
+########################################
+
 variable "elb_additional_sg_tags" {
   default     = {}
   description = "Additional tags to apply to the ELB security group. Useful if you use an external process to manage ingress rules."
@@ -274,6 +346,7 @@ variable "elb_allowed_cidr_blocks" {
 }
 
 variable "elb_certificate" {
+  default     = null
   description = "ARN of certificate to associate with ELB"
   type        = string
 }
@@ -297,12 +370,30 @@ variable "elb_ssh_port" {
 }
 
 variable "elb_subnets" {
+  default     = null
   description = "Subnets to associate ELB to"
   type        = list(string)
 }
 
-variable "vpc_id" {
-  description = "VPC to create associated resources in"
+########################################
+# DNS Vars
+########################################
+
+variable "domain_name" {
+  default     = null
+  description = "domain name, which is only used if `zone_id` is not specified to compute the base url"
+  type        = string
+}
+
+variable "dns_prefix" {
+  default     = null
+  description = "Hostname that will be used for bitbucket. This will be combined with the domain in `zone_id` or the value of `domain_name` to form the base url."
+  type        = string
+}
+
+variable "dns_ssh_prefix" {
+  default     = null
+  description = "Hostname that will be used for bitbucket SSH access. This is only used when `create_alb == true`"
   type        = string
 }
 
