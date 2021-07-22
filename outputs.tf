@@ -44,18 +44,33 @@ output "iam_role_arn" {
 }
 
 output "lb_arn" {
-  description = "ARN of the ELB for Bitbucket access"
-  value       = aws_elb.this.arn
+  description = "ARN of the ELB for Bitbucket access (HTTPS when ALB is used)"
+  value       = try(aws_lb.https[0].arn, aws_elb.this[0].arn)
 }
 
 output "lb_dns_name" {
   description = "DNS Name of the ELB for Bitbucket access"
-  value       = aws_elb.this.dns_name
+  value       = try(aws_lb.https[0].dns_name, aws_elb.this[0].dns_name)
 }
 
 output "lb_zone_id" {
   description = "Route53 Zone ID of the ELB for Bitbucket access"
-  value       = aws_elb.this.zone_id
+  value       = try(aws_lb.https[0].zone_id, aws_elb.this[0].zone_id)
+}
+
+output "ssh_lb_arn" {
+  description = "ARN of the LB for Bitbucket SSH access (only valid when ALB is used)"
+  value       = try(aws_lb.ssh[0].arn, null)
+}
+
+output "ssh_lb_dns_name" {
+  description = "DNS Name of the LB for Bitbucket access (only valid when ALB is used)"
+  value       = try(aws_lb.ssh[0].dns_name, null)
+}
+
+output "ssh_lb_zone_id" {
+  description = "Route53 Zone ID of the LB for Bitbucket SSH access"
+  value       = try(aws_lb.ssh[0].zone_id, null)
 }
 
 output "url" {

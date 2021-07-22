@@ -1,4 +1,6 @@
 resource "aws_security_group" "elb" {
+  count = var.create_alb ? 0 : 1
+
   name_prefix = var.name
   description = "Bitbucket Inbound ELB"
   vpc_id      = var.vpc_id
@@ -6,7 +8,7 @@ resource "aws_security_group" "elb" {
   tags = merge(
     var.tags,
     var.elb_additional_sg_tags,
-    { "Name" : "${var.name}" }
+    { "Name" : var.name }
   )
 
   lifecycle {
@@ -15,53 +17,59 @@ resource "aws_security_group" "elb" {
 }
 
 resource "aws_security_group_rule" "elb_egress" {
+  count = var.create_alb ? 0 : 1
+
   description              = "Allow traffic from the ELB to the instances"
   from_port                = 7990
   protocol                 = "tcp"
-  security_group_id        = aws_security_group.elb.id
+  security_group_id        = aws_security_group.elb[0].id
   source_security_group_id = aws_security_group.this.id
   to_port                  = 7990
   type                     = "egress"
 }
 
 resource "aws_security_group_rule" "elb_egress_ssh" {
+  count = var.create_alb ? 0 : 1
+
   description              = "Allow SSH traffic from the ELB to the instances"
   from_port                = 7999
   protocol                 = "tcp"
-  security_group_id        = aws_security_group.elb.id
+  security_group_id        = aws_security_group.elb[0].id
   source_security_group_id = aws_security_group.this.id
   to_port                  = 7999
   type                     = "egress"
 }
 
 resource "aws_security_group_rule" "elb_ingress" {
-  count = length(var.elb_allowed_cidr_blocks) > 0 ? 1 : 0
+  count = !var.create_alb && length(var.elb_allowed_cidr_blocks) > 0 ? 1 : 0
 
   cidr_blocks       = var.elb_allowed_cidr_blocks #tfsec:ignore:AWS006
   description       = "Allow HTTPS traffic from the allowed ranges"
   from_port         = var.elb_port
   protocol          = "tcp"
-  security_group_id = aws_security_group.elb.id
+  security_group_id = aws_security_group.elb[0].id
   to_port           = var.elb_port
   type              = "ingress"
 }
 
 resource "aws_security_group_rule" "elb_ingress_ssh" {
-  count = length(var.elb_allowed_cidr_blocks) > 0 ? 1 : 0
+  count = !var.create_alb && length(var.elb_allowed_cidr_blocks) > 0 ? 1 : 0
 
   cidr_blocks       = var.elb_allowed_cidr_blocks #tfsec:ignore:AWS006
   description       = "Allow SSH traffic from the allowed ranges"
   from_port         = var.elb_ssh_port
   protocol          = "tcp"
-  security_group_id = aws_security_group.elb.id
+  security_group_id = aws_security_group.elb[0].id
   to_port           = var.elb_ssh_port
   type              = "ingress"
 }
 
 resource "aws_elb" "this" {
+  count = var.create_alb ? 0 : 1
+
   name_prefix     = substr(var.name, 0, 6)
   internal        = var.elb_internal
-  security_groups = [aws_security_group.elb.id]
+  security_groups = [aws_security_group.elb[0].id]
   subnets         = var.elb_subnets
   tags            = var.tags
 
