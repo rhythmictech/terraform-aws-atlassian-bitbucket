@@ -66,6 +66,9 @@ else
   mount ${mount_point}
 fi
 
+echo "Fixing permissions for Data partition to be owned by Bitbucket"
+chown -R bitbucket:bitbucket /opt/atlassian/data/
+
 sed -ie 's/^9-:-Xlog:gc.*$/# Removed GC settings that break Java 11/' /opt/atlassian/data/bitbucket/shared/search/jvm.options
 cat <<END > /opt/atlassian/data/bitbucket/shared/bitbucket.properties
 setup.displayName: ${site_name}
