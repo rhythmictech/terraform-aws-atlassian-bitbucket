@@ -37,6 +37,8 @@ then
   then
     echo "Data partition not mounted, mounting and adding to fstab"
     echo "/dev/nvme1n1p1 ${mount_point}         xfs     defaults,noatime   1 1" >> /etc/fstab
+    echo "Giving device time to prepare for mount..."
+    sleep 20
     mount ${mount_point}
   fi
 
