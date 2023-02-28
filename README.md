@@ -59,7 +59,7 @@ A bit about this module
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_bitbucketdb"></a> [bitbucketdb](#module\_bitbucketdb) | rhythmictech/rds-postgres/aws | 4.5.0 |
+| <a name="module_bitbucketdb"></a> [bitbucketdb](#module\_bitbucketdb) | rhythmictech/rds-postgres/aws | 4.6.0 |
 
 ## Resources
 
