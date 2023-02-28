@@ -177,14 +177,16 @@ variable "db_parameters" {
 
   default = [
     {
-      name  = "client_encoding"
-      value = "UTF8"
+      apply_method = "immediate"
+      name         = "client_encoding"
+      value        = "UTF8"
     }
   ]
 
   type = list(object({
-    name  = string
-    value = string
+    apply_method = string
+    name         = string
+    value        = string
   }))
 }
 

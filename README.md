@@ -59,7 +59,7 @@ A bit about this module
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_bitbucketdb"></a> [bitbucketdb](#module\_bitbucketdb) | rhythmictech/rds-postgres/aws | 4.4.0 |
+| <a name="module_bitbucketdb"></a> [bitbucketdb](#module\_bitbucketdb) | rhythmictech/rds-postgres/aws | 4.5.0 |
 
 ## Resources
 
@@ -146,7 +146,7 @@ A bit about this module
 | <a name="input_db_monitoring_interval"></a> [db\_monitoring\_interval](#input\_db\_monitoring\_interval) | Enhanced monitoring interval (5-60 seconds, 0 to disable) | `number` | `0` | no |
 | <a name="input_db_monitoring_role_arn"></a> [db\_monitoring\_role\_arn](#input\_db\_monitoring\_role\_arn) | IAM Role ARN for Database Monitoring permissions (if `db_monitoring_interval > 0` and this is omitted, a role will be created automatically) | `string` | `null` | no |
 | <a name="input_db_multi_az"></a> [db\_multi\_az](#input\_db\_multi\_az) | If true, DB will be configured in multi-AZ mode | `bool` | `false` | no |
-| <a name="input_db_parameters"></a> [db\_parameters](#input\_db\_parameters) | DB parameters (by default only sets utf8 as required by Bitbucket) | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | <pre>[<br>  {<br>    "name": "client_encoding",<br>    "value": "UTF8"<br>  }<br>]</pre> | no |
+| <a name="input_db_parameters"></a> [db\_parameters](#input\_db\_parameters) | DB parameters (by default only sets utf8 as required by Bitbucket) | <pre>list(object({<br>    apply_method = string<br>    name         = string<br>    value        = string<br>  }))</pre> | <pre>[<br>  {<br>    "apply_method": "immediate",<br>    "name": "client_encoding",<br>    "value": "UTF8"<br>  }<br>]</pre> | no |
 | <a name="input_db_password_version"></a> [db\_password\_version](#input\_db\_password\_version) | Increment to force master user password change | `number` | `1` | no |
 | <a name="input_db_performance_insights_enabled"></a> [db\_performance\_insights\_enabled](#input\_db\_performance\_insights\_enabled) | Whether or not to enable DB performance insights | `bool` | `false` | no |
 | <a name="input_db_storage_size"></a> [db\_storage\_size](#input\_db\_storage\_size) | Size of DB (in GB) | `number` | n/a | yes |
