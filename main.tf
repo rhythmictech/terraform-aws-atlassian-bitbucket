@@ -65,7 +65,10 @@ resource "aws_ebs_volume" "data" {
   size              = var.data_volume_size
 
   tags = merge(var.tags,
-    { VolumeKey = var.volume_key }
+    {
+      Name      = var.volume_key,
+      VolumeKey = var.volume_key
+    }
   )
 }
 
