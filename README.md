@@ -43,7 +43,7 @@ A bit about this module
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.19 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 2.65 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 1.2 |
 | <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.1 |
 
@@ -59,7 +59,7 @@ A bit about this module
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_bitbucketdb"></a> [bitbucketdb](#module\_bitbucketdb) | rhythmictech/rds-postgres/aws | 4.6.0 |
+| <a name="module_bitbucketdb"></a> [bitbucketdb](#module\_bitbucketdb) | rhythmictech/rds-postgres/aws | ~> 5.0 |
 
 ## Resources
 
