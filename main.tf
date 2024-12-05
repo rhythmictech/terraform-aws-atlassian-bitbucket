@@ -1,7 +1,7 @@
 data "aws_region" "current" {
 }
 
-data "template_cloudinit_config" "this" {
+data "cloudinit_config" "this" {
 
   part {
     content_type = "text/x-shellscript"
@@ -120,7 +120,7 @@ resource "aws_launch_configuration" "this" {
   image_id                    = var.ami_id
   instance_type               = var.asg_instance_type
   key_name                    = var.asg_key_name
-  user_data_base64            = data.template_cloudinit_config.this.rendered
+  user_data_base64            = data.cloudinit_config.this.rendered
 
   root_block_device {
     encrypted   = true
